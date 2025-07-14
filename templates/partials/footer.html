@@ -1,0 +1,39 @@
+<footer class="mt-5 py-3 bg-body-tertiary">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <h5>GeoGames</h5>
+                <p>ქართული ინდი თამაშების პლატფორმა</p>
+            </div>
+            <div class="col-md-3">
+                <h5>ბმულები</h5>
+                <ul class="list-unstyled">
+                    <li><a href="{{ url_for('main.index') }}">მთავარი</a></li>
+                    <li><a href="{{ url_for('main.list_games') }}">თამაშები</a></li>
+                    <li><a href="{{ url_for('main.help') }}">დახმარება</a></li>
+                </ul>
+            </div>
+            <div class="col-md-3">
+                <h5>კონტაქტი</h5>
+                <ul class="list-unstyled">
+                    <li><a href="https://discord.gg/your-invite-link" target="_blank"><i class="bi bi-discord"></i> Discord</a></li>
+                    <li><a href="mailto:info@geogames.ge"><i class="bi bi-envelope"></i> Email</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="row mt-4">
+    <div class="col text-center">
+        <a href="https://tbcbank.ge/ka/tbc-education" target="_blank">
+            <img src="{{ url_for('static', filename='images/TBC/TBC.png') }}" alt="TBC" style="max-width: 200px; height: auto;">
+        </a>
+    </div>
+</div>
+
+
+        <hr>
+        <div class="text-center">
+            <small class="text-muted">&copy; 2025 GeoGames. ყველა უფლება დაცულია.</small>
+        </div>
+    </div>
+</footer>

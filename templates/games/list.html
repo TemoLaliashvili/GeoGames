@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2 class="mb-4">ყველა თამაში</h2>
+
+<div class="row mb-3">
+    <div class="col-md-6">
+        <form class="d-flex" method="GET" action="{{ url_for('main.list_games') }}">
+            <input class="form-control me-2" type="search" name="q" placeholder="ძიება..." value="{{ request.args.get('q', '') }}">
+            <button class="btn btn-outline-success" type="submit">ძიება</button>
+        </form>
+    </div>
+</div>
+
+<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+    {% for game in games.items %}
+    <div class="col">
+        <div class="card h-100 game-card">
+            <img src="{{ game.cover_url }}" class="card-img-top" alt="{{ game.title }}">
+            <div class="card-body">
+                <h5 class="card-title">{{ game.title }}</h5>
+                <p class="card-text">{{ game.short_description }}</p>
+                <div class="d-flex justify-content-between align-items-center">
+                    <span class="badge bg-warning text-dark">
+                        {{ "%.1f"|format(game.average_rating) }} <i class="bi bi-star-fill"></i>
+                    </span>
+                    <small class="text-muted">{{ game.download_count }} გადმოწერა</small>
+                </div>
+            </div>
+            <div class="card-footer">
+                <a href="{{ url_for('main.game_detail', game_id=game.id) }}" class="btn btn-outline-primary">დეტალები</a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+<nav class="mt-4">
+    <ul class="pagination justify-content-center">
+        {% if games.has_prev %}
+        <li class="page-item">
+            <a class="page-link" href="{{ url_for('main.list_games', page=games.prev_num, q=request.args.get('q', '')) }}">წინა</a>
+        </li>
+        {% else %}
+        <li class="page-item disabled">
+            <span class="page-link">წინა</span>
+        </li>
+        {% endif %}
+        
+        {% for num in games.iter_pages(left_edge=1, right_edge=1, left_current=2, right_current=3) %}
+            {% if num %}
+                {% if games.page == num %}
+                <li class="page-item active">
+                    <span class="page-link">{{ num }}</span>
+                </li>
+                {% else %}
+                <li class="page-item">
+                    <a class="page-link" href="{{ url_for('main.list_games', page=num, q=request.args.get('q', '')) }}">{{ num }}</a>
+                </li>
+                {% endif %}
+            {% else %}
+                <li class="page-item disabled">
+                    <span class="page-link">...</span>
+                </li>
+            {% endif %}
+        {% endfor %}
+        
+        {% if games.has_next %}
+        <li class="page-item">
+            <a class="page-link" href="{{ url_for('main.list_games', page=games.next_num, q=request.args.get('q', '')) }}">შემდეგი</a>
+        </li>
+        {% else %}
+        <li class="page-item disabled">
+            <span class="page-link">შემდეგი</span>
+        </li>
+        {% endif %}
+    </ul>
+</nav>
+{% endblock %}

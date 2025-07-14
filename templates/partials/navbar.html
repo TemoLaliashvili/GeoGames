@@ -1,0 +1,67 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
+    <div class="container">
+        <a class="navbar-brand" href="{{ url_for('main.index') }}">GeoGames</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarContent">
+            <ul class="navbar-nav me-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('main.list_games') }}">თამაშები</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('main.help') }}">დახმარება</a>
+                </li>
+                {% if current_user.is_authenticated and current_user.is_developer %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('main.add_game') }}">თამაშის დამატება</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('main.developer_dashboard') }}">დეველოპერის პანელი</a>
+                </li>
+                {% endif %}
+                {% if current_user.is_authenticated and (current_user.is_admin or current_user.is_moderator) %}
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="adminDropdown" role="button" data-bs-toggle="dropdown">
+                        ადმინ პანელი
+                    </a>
+                    <ul class="dropdown-menu">
+                        {% if current_user.is_admin %}
+                        <li><a class="dropdown-item" href="{{ url_for('main.manage_users') }}">მომხმარებლები</a></li>
+                        <li><a class="dropdown-item" href="{{ url_for('main.developer_requests') }}">დეველოპერის მოთხოვნები</a></li>
+
+                        {% endif %}
+                        <li><a class="dropdown-item" href="{{ url_for('main.manage_games') }}">თამაშები</a></li>
+                    </ul>
+                </li>
+                {% endif %}
+            </ul>
+
+            <ul class="navbar-nav">
+                {% if current_user.is_authenticated %}
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown">
+                        <img src="{{ current_user.avatar_url or url_for('static', filename='images/avatars/default.png') }}" 
+                             class="rounded-circle me-1" width="30" height="30">
+                        {{ current_user.username }}
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li><a class="dropdown-item" href="{{ url_for('main.view_profile') }}">პროფილი</a></li>
+                        <li><a class="dropdown-item" href="{{ url_for('main.edit_profile') }}">პროფილის რედაქტირება</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="{{ url_for('main.logout') }}">გამოსვლა</a></li>
+                    </ul>
+                </li>
+                {% else %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('main.login') }}">შესვლა</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('main.register') }}">რეგისტრაცია</a>
+                </li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+</nav>

@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8">
+        <h2>დახმარების ცენტრი</h2>
+        
+        <div class="accordion" id="helpAccordion">
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne">
+                        როგორ დავრეგისტრირდე?
+                    </button>
+                </h2>
+                <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#helpAccordion">
+                    <div class="accordion-body">
+                        <p>რეგისტრაციისთვის გადადით <a href="{{ url_for('main.register') }}">რეგისტრაციის გვერდზე</a> და შეავსეთ ფორმა. რეგისტრაციის დასრულების შემდეგ თქვენს ელ.ფოსტაზე გამოგიგზავნებათ დადასტურების ლინკი.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo">
+                        როგორ დავამატო თამაში?
+                    </button>
+                </h2>
+                <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#helpAccordion">
+                    <div class="accordion-body">
+                        <p>თამაშის დასამატებლად ჯერ უნდა გქონდეთ დეველოპერის სტატუსი. თუ არ გაქვთ, დაგვიკავშირდით. დეველოპერის სტატუსის მქონე მომხმარებლებს შეუძლიათ თამაშის დამატება <a href="{{ url_for('main.add_game') }}">ამ გვერდიდან</a>.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree">
+                        როგორ შევცვალო პროფილის ინფორმაცია?
+                    </button>
+                </h2>
+                <div id="collapseThree" class="accordion-collapse collapse" data-bs-parent="#helpAccordion">
+                    <div class="accordion-body">
+                        <p>პროფილის რედაქტირება შეგიძლიათ <a href="{{ url_for('main.edit_profile') }}">პროფილის რედაქტირების გვერდიდან</a>. სახელის ან ელ.ფოსტის შეცვლისთვის დაგჭირდებათ მიმდინარე პაროლის შეყვანა.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">დაგვიკავშირდით</h5>
+                <p class="card-text">თუ დამატებითი დახმარება გჭირდებათ, შეგიძლიათ დაგვიკავშირდეთ დისკორდის სერვერზე:</p>
+                <a href="https://discord.gg/your-invite-link" class="btn btn-primary" target="_blank">
+                    <i class="bi bi-discord"></i> Discord სერვერი
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-5">
+    <h2 class="mb-4">თამაშის რედაქტირება</h2>
+    <form method="POST" enctype="multipart/form-data" class="needs-validation" novalidate>
+        {{ form.hidden_tag() }}
+        <div class="form-group mb-3">
+            {{ form.title.label(class="form-label") }}
+            {{ form.title(class="form-control", placeholder="შეიყვანეთ სათაური") }}
+        </div>
+        <div class="form-group mb-3">
+            {{ form.short_description.label(class="form-label") }}
+            {{ form.short_description(class="form-control", placeholder="მოკლე აღწერა") }}
+        </div>
+        <div class="form-group mb-3">
+            {{ form.description.label(class="form-label") }}
+            {{ form.description(class="form-control", rows=5, placeholder="სრული აღწერა") }}
+        </div>
+        <div class="form-group mb-3">
+            {{ form.cover_image.label(class="form-label") }}
+            {{ form.cover_image(class="form-control") }}
+            {% if game.cover_image %}
+                <img src="{{ game.cover_url }}" alt="cover" class="img-thumbnail mt-2" style="max-width: 200px;">
+            {% endif %}
+        </div>
+        <div class="form-group form-check mb-3">
+            {{ form.is_free(class="form-check-input", id="isFreeCheck") }}
+            <label class="form-check-label" for="isFreeCheck">უფასო თამაში</label>
+        </div>
+        <div class="form-group mb-3" id="costField">
+            {{ form.cost.label(class="form-label") }}
+            {{ form.cost(class="form-control", placeholder="ფასი ₾") }}
+        </div>
+        <div class="form-group mb-3">
+            {{ form.download_link.label(class="form-label") }}
+            {{ form.download_link(class="form-control", placeholder="გადმოწერის ლინკი") }}
+        </div>
+        <div class="form-group mb-4">
+            {{ form.version.label(class="form-label") }}
+            {{ form.version(class="form-control", placeholder="ვერსია") }}
+        </div>
+        <button type="submit" class="btn btn-primary w-100">{{ form.submit.label.text or 'განახლება' }}</button>
+    </form>
+</div>
+<script>
+
+    function toggleCostField() {
+        const isFree = document.getElementById('isFreeCheck').checked;
+        const costField = document.getElementById('costField');
+        costField.style.display = isFree ? 'none' : 'block';
+        if(isFree) {
+            document.getElementById('{{ form.cost.id }}').value = 0;
+        }
+    }
+    document.getElementById('isFreeCheck').addEventListener('change', toggleCostField);
+    window.addEventListener('DOMContentLoaded', toggleCostField);
+</script>
+{% endblock %}

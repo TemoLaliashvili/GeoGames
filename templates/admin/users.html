@@ -1,0 +1,120 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2 class="mb-4">მომხმარებლების მართვა</h2>
+
+<div class="card">
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>მომხმარებელი</th>
+                        <th>ელ. ფოსტა</th>
+                        <th>როლები</th>
+                        <th>რეგისტრაცია</th>
+                        <th>მოქმედებები</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for user in users.items %}
+                    <tr>
+                        <td>{{ user.id }}</td>
+                        <td>
+                            <img src="{{ user.avatar_url }}" class="rounded-circle me-2" width="30" height="30">
+                            {{ user.username }}
+                        </td>
+                        <td>{{ user.email }}</td>
+                        <td>
+                            {% if user.is_admin %}
+                            <span class="badge bg-danger">ადმინი</span>
+                            {% elif user.is_moderator %}
+                            <span class="badge bg-warning text-dark">მოდერატორი</span>
+                            {% elif user.is_developer %}
+                            <span class="badge bg-primary">დეველოპერი</span>
+                            {% else %}
+                            <span class="badge bg-secondary">მომხმარებელი</span>
+                            {% endif %}
+                        </td>
+                        <td>{{ user.created_at.strftime('%Y-%m-%d') }}</td>
+                        <td>
+                            <div class="btn-group" role="group">
+                                {% if not user.is_admin or current_user.id == user.id %}
+                                <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" 
+                                        data-bs-target="#editUserModal{{ user.id }}">
+                                    <i class="bi bi-pencil"></i>
+                                </button>
+                                {% if current_user.id != user.id %}
+                                <a href="{{ url_for('main.delete_user', user_id=user.id) }}"
+                                   class="btn btn-sm btn-outline-danger"
+                                   onclick="return confirm('დარწმუნებული ხართ, რომ გსურთ ამ მომხმარებლის წაშლა?')">
+                                    <i class="bi bi-trash"></i>
+                                </a>
+                                {% endif %}
+                                {% endif %}
+                            </div>
+                        </td>
+                    </tr>
+
+                    <div class="modal fade" id="editUserModal{{ user.id }}" tabindex="-1">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">მომხმარებლის რედაქტირება: {{ user.username }}</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                </div>
+                                <form method="POST" action="{{ url_for('main.update_user', user_id=user.id) }}">
+                                    <div class="modal-body">
+                                        <div class="mb-3">
+                                            <label class="form-label">როლები</label>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" name="is_developer" 
+                                                       id="devCheck{{ user.id }}" {% if user.is_developer %}checked{% endif %}>
+                                                <label class="form-check-label" for="devCheck{{ user.id }}">
+                                                    დეველოპერი
+                                                </label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" name="is_moderator" 
+                                                       id="modCheck{{ user.id }}" {% if user.is_moderator %}checked{% endif %}>
+                                                <label class="form-check-label" for="modCheck{{ user.id }}">
+                                                    მოდერატორი
+                                                </label>
+                                            </div>
+                                            {% if current_user.is_admin %}
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" name="is_admin" 
+                                                       id="adminCheck{{ user.id }}" {% if user.is_admin %}checked{% endif %}>
+                                                <label class="form-check-label" for="adminCheck{{ user.id }}">
+                                                    ადმინისტრატორი
+                                                </label>
+                                            </div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">დახურვა</button>
+                                        <button type="submit" class="btn btn-primary">ცვლილებების შენახვა</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        
+        <nav class="mt-4">
+            <ul class="pagination justify-content-center">
+                {% if users.has_prev %}
+                <li class="page-item">
+                    <a class="page-link" href="{{ url_for('manage_users', page=users.prev_num) }}">წინა</a>
+                </li>
+                {% else %}
+                <li class="page-item disabled">
+                    <span class="page-link">წინა</span>
+                </li>
+                {% endif %}
+{% endblock %}

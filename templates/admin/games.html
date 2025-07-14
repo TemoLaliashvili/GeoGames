@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container py-4">
+    <h2 class="mb-4">თამაშების მართვა</h2>
+    <div class="mb-3">
+        <a href="{{ url_for('main.manage_games', pending='true') }}" class="btn btn-outline-warning btn-sm">მიმოხილვაში</a>
+        <a href="{{ url_for('main.manage_games') }}" class="btn btn-outline-primary btn-sm">ყველა თამაში</a>
+    </div>
+    <div class="card">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>სათაური</th>
+                            <th>დეველოპერი</th>
+                            <th>სტატუსი</th>
+                            <th>მოქმედება</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for game in games.items %}
+                        <tr>
+                            <td>{{ game.id }}</td>
+                            <td>{{ game.title }}</td>
+                            <td>{{ game.developer.username }}</td>
+                            <td>
+                                {% if game.is_approved %}
+                                    <span class="badge bg-success">დამტკიცებული</span>
+                                {% else %}
+                                    <span class="badge bg-warning text-dark">მიმოხილვაშია</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <a href="{{ url_for('main.edit_game', game_id=game.id) }}" class="btn btn-sm btn-outline-primary">რედაქტირება</a>
+                                <a href="{{ url_for('main.game_detail', game_id=game.id) }}" class="btn btn-sm btn-outline-info">ნახვა</a>
+                                <form action="{{ url_for('main.delete_game', game_id=game.id) }}" method="POST" style="display:inline;" onsubmit="return confirm('ნამდვილად გსურთ ამ თამაშის წაშლა?');">
+                                    <button type="submit" class="btn btn-sm btn-danger">წაშლა</button>
+                                </form>
+                                {% if not game.is_approved %}
+                                    <a href="{{ url_for('main.admin_approve_game', game_id=game.id) }}" class="btn btn-sm btn-success">დამტკიცება</a>
+                                    <a href="{{ url_for('main.admin_reject_game', game_id=game.id) }}" class="btn btn-sm btn-danger" onclick="return confirm('დარწმუნებული ხართ, რომ გსურთ ამ თამაშის უარყოფა და წაშლა?')">უარყოფა</a>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <nav class="mt-4">
+                <ul class="pagination justify-content-center">
+                    {% if games.has_prev %}
+                    <li class="page-item">
+                        <a class="page-link" href="{{ url_for('main.manage_games', page=games.prev_num) }}">წინა</a>
+                    </li>
+                    {% else %}
+                    <li class="page-item disabled">
+                        <span class="page-link">წინა</span>
+                    </li>
+                    {% endif %}
+                    <li class="page-item disabled">
+                        <span class="page-link">გვერდი {{ games.page }} / {{ games.pages }}</span>
+                    </li>
+                    {% if games.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="{{ url_for('main.manage_games', page=games.next_num) }}">შემდეგი</a>
+                    </li>
+                    {% else %}
+                    <li class="page-item disabled">
+                        <span class="page-link">შემდეგი</span>
+                    </li>
+                    {% endif %}
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>
+{% endblock %}
