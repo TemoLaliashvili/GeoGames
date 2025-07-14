@@ -107,7 +107,7 @@ class GameForm(FlaskForm):
     description = TextAreaField('სრული აღწერა', validators=[
         DataRequired(message='ეს ველი სავალდებულოა')
     ])
-    cover_image = FileField('სახეხსახური', validators=[
+    cover_image = FileField('ფოტო', validators=[
         DataRequired(message='ეს ველი სავალდებულოა')
     ])
     download_link = StringField('გადმოწერის ლინკი', validators=[
