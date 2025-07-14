@@ -341,7 +341,7 @@ def add_game():
 
     if form.validate_on_submit():
         if not allowed_file(form.cover_image.data.filename):
-            flash('არასწორი ფაილის ტიპი სახეხსახურისთვის', 'danger')
+            flash('არასწორი ფაილის ტიპი ფოტოსთვის', 'danger')
             return render_template('games/add.html', title='თამაშის დამატება', form=form)
 
         cover_filename = save_picture(form.cover_image.data, 'game_covers')
