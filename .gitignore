@@ -6,6 +6,7 @@ __pycache__/
 
 instance/
 *.pyc
+geogames.db
 
 venv/
 ENV/
